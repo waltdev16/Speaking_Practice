@@ -3,11 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TOEIC Speaking Practice - Questions 8 to 10</title>
-<meta name="description" content="Practice TOEIC Speaking Questions 8–10 with 25 interactive documents, model answers, vocabulary, audio and timed simulations.">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#0B0B0C">
-<link rel="icon" type="image/png" href="assets/favicon.png">
+<meta name="author" content="TOEIC Speaking Practice Team">
+<meta property="og:type" content="website">
+<meta property="og:title" content="TOEIC Speaking Practice | Questions 8–10">
+<meta property="og:description" content="Practice TOEIC Speaking Questions 8–10 with 25 sets, vocabulary support, timed exercises, and the Mystery Envelope game.">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TOEIC Speaking Practice | Questions 8–10">
+<meta name="twitter:description" content="Interactive TOEIC Speaking practice with timed questions, vocabulary, and Mystery Envelope challenges.">
+
+<title>TOEIC Speaking Practice · Questions 8–10</title>
+<meta name="description" content="Practice TOEIC Speaking Questions 8–10 with 25 interactive sets, real-world documents, timed speaking activities, vocabulary support, and Mystery Envelope challenges.">
+<link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Courier+Prime:wght@400;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,14 +27,17 @@
 <div class="dark">
   <header class="top">
     <div class="wrap">
-      <div class="logo"><img class="logo-img" src="assets/logo.png" alt="" width="34" height="34"><div>Speaking Q8–10<small>TOEIC practice</small></div></div>
+      <a class="logo" href="#" style="color:inherit;text-decoration:none"><img class="logo-img" src="assets/favicon.png" alt="TOEIC Speaking Practice logo" width="34" height="34"><div>Speaking Q8–10<small>TOEIC practice</small></div></a>
       <nav>
         <a href="#practice">Practice</a>
-        <button class="btn sm ghost-w" id="openWords">Saved words <span class="count" id="wcount">0</span></button>
+        <a href="#mystery" class="game"><span class="full">Mystery Envelope</span> <i>GAME</i></a>
+        <button class="btn sm ghost-w" id="openWords" aria-label="Saved words"><span class="full">Saved words</span><svg class="star" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg> <span class="count" id="wcount">0</span></button>
       </nav>
     </div>
   </header>
-
+</div>
+<div id="home">
+<div class="dark">
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
@@ -34,6 +46,7 @@
         <p class="lead enter d2">25 real-life documents (flyers, menus, emails, schedules and price lists) with three questions each. Tap a hard word to learn it, then answer out loud and compare with a model answer.</p>
         <div class="hero-cta enter d3">
           <a class="btn green" href="#practice">Start practicing →</a>
+          <a class="btn ghost-w" href="#mystery">Play Mystery Envelope</a>
         </div>
       </div>
       <div class="demo enter d4" aria-hidden="true">
@@ -51,7 +64,6 @@
   </section>
 </div>
 
-<main id="main-content">
 <section class="practice" id="practice">
   <div class="wrap">
     <div class="head">
@@ -69,9 +81,25 @@
     </div>
   </div>
 </section>
-</main>
+</div>
 
-<footer class="dark"><div class="wrap">Developed by our team for an educational TOEIC Speaking demonstration.</div></footer>
+<div id="mystery" hidden>
+  <section class="dark mhero">
+    <div class="party" id="party"></div>
+    <div class="wrap">
+      <span class="eyebrow enter"><i></i>Game · 2–3 minutes per case</span>
+      <h1 class="enter d1">Mystery <span>Envelope</span></h1>
+      <p class="lead enter d2">Three sealed cases. Each envelope hides a different schedule and a surprise question. Pick one, read fast, and solve the case out loud.</p>
+      <div class="mrules enter d3"><span><b>1</b>Pick an envelope</span><span><b>2</b>Read the schedule</span><span><b>3</b>Answer the surprise question</span></div>
+      <div class="envs" id="envs"></div>
+      <div class="mbar"><div class="score" id="score"></div><button class="btn ghost-w sm" id="newRound">↻ New round</button></div>
+      <div id="win"></div>
+    </div>
+  </section>
+  <section class="case" id="case" hidden></section>
+</div>
+
+<footer class="dark"><div class="wrap">Unofficial practice material, not affiliated with ETS. TOEIC® is a registered trademark of ETS. All companies, people and documents are fictional.</div></footer>
 
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer" aria-label="Saved words">
@@ -80,7 +108,7 @@
 </aside>
 <div class="toast" id="toast"></div>
 
-<script defer src="js/data.js"></script>
-<script defer src="js/app.js"></script>
+<script src="js/data.js" defer></script>
+<script src="js/app.js" defer></script>
 </body>
 </html>
