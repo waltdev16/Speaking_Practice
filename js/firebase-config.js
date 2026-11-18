@@ -2,7 +2,7 @@
    Paste the values from: Firebase console → Project settings → General → Your apps → SDK setup and configuration → "Config".
    These values identify your project; they are not passwords. Access is controlled by Authentication and the
    Realtime Database Security Rules. Never put the host's email or password in this file or anywhere in the repository. */
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyAept2OW5raUMjAvZfLEOFqHiX-v3GcOU0",
   authDomain: "toeic-detective-duel.firebaseapp.com",
   databaseURL: "https://toeic-detective-duel-default-rtdb.firebaseio.com",
