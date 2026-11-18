@@ -1,4 +1,10 @@
-/* UI rendering, practice flow, timers, audio, and game logic. */
+/* TOEIC Speaking Practice — practice section, word cards, solo Mystery Envelope. */
+const QM=[
+ {n:8,type:'Find the facts',t:15,tip:'Answer <b>both parts</b> of the question in full sentences.'},
+ {n:9,type:'Fix the mistake',t:15,tip:'Is the caller right? If not, start with <b>“Actually…”</b> or <b>“I’m afraid…”</b> and give the correct fact.'},
+ {n:10,type:'List it clearly',t:30,tip:'<b>Count, then list</b>: “There are two… First… Then…”. You hear this question twice.'}
+];
+
 /* ===================== APP ===================== */
 const $=s=>document.querySelector(s);
 const store={get(k,d){try{const v=localStorage.getItem('tq2_'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('tq2_'+k,JSON.stringify(v))}catch(e){}}};
@@ -265,33 +271,7 @@ function route(){
 }
 
 /* ===== Mystery Envelope game ===== */
-/* ===== key facts each surprise question must mention: [label, other ways to say it...] ===== */
-const KEYS={
-museum:[[['$15 for adults','15'],['$8 for children','8']],
- [['not included','no','not',"isnt"],['$4 extra','4']],
- [['sign up first','sign up','signup','register','registration']],
- [['robot workshop','robot'],['planet show','planet','planetarium'],['science talk','mars','talk']]],
-dentist:[[['Mark Lee','mark'],['8:30','830']],
- [['rescheduled to Thursday','rescheduled','moved','thursday','changed']],
- [['10 a.m.','10'],['available','free','open']],
- [['James Park','james','park'],['2 p.m.','2'],['X-rays / check-up','x ray','xray','x rays','check up','checkup']]],
-festival:[[['$35','35'],['$45','45'],['at the gate','gate']],
- [['canceled','cancelled','not happening','no longer']],
- [['not allowed','no','not',"cant",'cannot'],['food trucks','food truck','food']],
- [['Rosa Vega','rosa','vega'],['Daniel Brooks','daniel','brooks'],['3:30','330'],['8 p.m.','8']]],
-safety:[[['8 a.m.','8'],['Building C','building c','building']],
- [['mandatory','required','must','have to','need to','not optional']],
- [['provided','included','free',"dont need",'no']],
- [['fire safety','fire','evacuation'],['protective equipment','protective','equipment']]],
-ferry:[[['$16','16'],['bike','bikes','bicycle'],['$3 extra','3']],
- [['weekends only','weekend','weekends','saturday','sunday'],['9:30 or 3 p.m.','930','3']],
- [['not allowed','no','not',"cant",'cannot'],['vehicles / cars','vehicle','vehicles','car','cars']],
- [['7 a.m.','7'],['9:30','930'],['arrival times','740','1010']]],
-room:[[['Linda Ho','linda'],['client presentation','presentation','client']],
- [['available','free','open'],['canceled','cancelled']],
- [['projector','yes'],['front desk','front desk','desk'],['one day ahead','one day','a day','day ahead','day before']],
- [['11:30 to 1','1130'],['4 to 5','4','5'],['canceled call','canceled','cancelled','free']]]
-};
+
 
 let round=null,solved=new Set(),curCase=-1,caseQ={},t3=0;
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}

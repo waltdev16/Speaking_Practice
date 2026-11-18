@@ -1,4 +1,4 @@
-/* Exercise sets, glossary, and Mystery Envelope content. */
+/* TOEIC Speaking Practice — content: glossary, exercises, Mystery Envelope cases. */
 /* ===================== GLOSSARY =====================
    key: [word, part of speech, Spanish, definition, example] */
 const G={
@@ -668,8 +668,54 @@ const CASES=[
   ['When is the room free on Thursday?','The room is free at two times. First, from 11:30 to 1, nobody has booked it. And from 4 to 5 p.m., it’s also free, because Linda Ho’s conference call was canceled.',2]]}
 ];
 
-const QM=[
- {n:8,type:'Find the facts',t:15,tip:'Answer <b>both parts</b> of the question in full sentences.'},
- {n:9,type:'Fix the mistake',t:15,tip:'Is the caller right? If not, start with <b>“Actually…”</b> or <b>“I’m afraid…”</b> and give the correct fact.'},
- {n:10,type:'List it clearly',t:30,tip:'<b>Count, then list</b>: “There are two… First… Then…”. You hear this question twice.'}
-];
+/* ===== key facts each surprise question must mention: [label, other ways to say it...] ===== */
+const KEYS={
+museum:[[['$15 for adults','15'],['$8 for children','8']],
+ [['not included','no','not',"isnt"],['$4 extra','4']],
+ [['sign up first','sign up','signup','register','registration']],
+ [['robot workshop','robot'],['planet show','planet','planetarium'],['science talk','mars','talk']]],
+dentist:[[['Mark Lee','mark'],['8:30','830']],
+ [['rescheduled to Thursday','rescheduled','moved','thursday','changed']],
+ [['10 a.m.','10'],['available','free','open']],
+ [['James Park','james','park'],['2 p.m.','2'],['X-rays / check-up','x ray','xray','x rays','check up','checkup']]],
+festival:[[['$35','35'],['$45','45'],['at the gate','gate']],
+ [['canceled','cancelled','not happening','no longer']],
+ [['not allowed','no','not',"cant",'cannot'],['food trucks','food truck','food']],
+ [['Rosa Vega','rosa','vega'],['Daniel Brooks','daniel','brooks'],['3:30','330'],['8 p.m.','8']]],
+safety:[[['8 a.m.','8'],['Building C','building c','building']],
+ [['mandatory','required','must','have to','need to','not optional']],
+ [['provided','included','free',"dont need",'no']],
+ [['fire safety','fire','evacuation'],['protective equipment','protective','equipment']]],
+ferry:[[['$16','16'],['bike','bikes','bicycle'],['$3 extra','3']],
+ [['weekends only','weekend','weekends','saturday','sunday'],['9:30 or 3 p.m.','930','3']],
+ [['not allowed','no','not',"cant",'cannot'],['vehicles / cars','vehicle','vehicles','car','cars']],
+ [['7 a.m.','7'],['9:30','930'],['arrival times','740','1010']]],
+room:[[['Linda Ho','linda'],['client presentation','presentation','client']],
+ [['available','free','open'],['canceled','cancelled']],
+ [['projector','yes'],['front desk','front desk','desk'],['one day ahead','one day','a day','day ahead','day before']],
+ [['11:30 to 1','1130'],['4 to 5','4','5'],['canceled call','canceled','cancelled','free']]]
+};
+
+/* ===== Detective Duel: multiple-choice questions for each case.
+   The correct answers are NOT here. They live only in the host-only Firebase path /answerKey
+   (imported from firebase/setup-data.json, which is not published with the site). */
+const DUEL_QUESTIONS={
+museum:[{q:'How much is admission for a child?',o:['$4','$8','$15','Free']},
+ {q:'Which activity requires signing up?',o:['The dinosaur guided tour','The planet show','The robot workshop','The science talk']},
+ {q:'What is true about the planet show?',o:['It costs $4 extra','It is included in admission','It is only at 11:30 a.m.','It is for ages 8–12 only']}],
+dentist:[{q:'Who is Dr. Ruiz’s first patient?',o:['Sofia Diaz','Peter Gray','James Park','Mark Lee']},
+ {q:'What happened to Laura Chen’s appointment?',o:['It was canceled','It moved to 10 a.m.','It was rescheduled to Thursday','It became a check-up']},
+ {q:'When is Dr. Ruiz free in the morning?',o:['8:30 a.m.','9:15 a.m.','10:00 a.m.','11:00 a.m.']}],
+festival:[{q:'How much is a ticket bought at the gate?',o:['$10','$35','$45','Free']},
+ {q:'Which performance was canceled?',o:['The Blue Notes','Rosa Vega','Kids’ music hour','The Northern Lights']},
+ {q:'What are visitors NOT allowed to do?',o:['Bring outside food','Take the free shuttle','Buy food from food trucks','Attend if it rains']}],
+safety:[{q:'Where is the training held?',o:['Lab B','The cafeteria','Building A','Building C']},
+ {q:'Who teaches first aid?',o:['Carl Mendes','The HR team','Nurse Kim Lee','The factory manager']},
+ {q:'What must workers wear?',o:['A uniform','Closed-toe shoes','A safety card','A helmet']}],
+ferry:[{q:'How much is a round-trip ticket?',o:['$3','$9','$12','$16']},
+ {q:'When does the 12:00 p.m. ferry run?',o:['Daily','Weekends only','Fridays only','Weekdays only']},
+ {q:'What is not allowed on board?',o:['Bikes','Children','Vehicles','Luggage']}],
+room:[{q:'Who is using the room at 10:00 a.m.?',o:['The sales team','The IT department','Marketing','Linda Ho']},
+ {q:'When is the room free?',o:['9:00–10:00','11:30–1:00','1:00–2:00','2:00–4:00']},
+ {q:'How should people book the room?',o:['Through the front desk, one day ahead','By email','On the whiteboard','By calling Linda Ho']}]
+};
