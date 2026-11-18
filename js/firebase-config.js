@@ -5,7 +5,7 @@
 export const firebaseConfig = {
   apiKey: "AIzaSyAept2OW5raUMjAvZfLEOFqHiX-v3GcOU0",
   authDomain: "toeic-detective-duel.firebaseapp.com",
-  databaseURL: "https://toeic-detective-duel-default-rtdb.firebaseio.com",
+  databaseURL: "https://toeic-detective-duel-default-rtdb.firebaseio.com/",
   projectId: "toeic-detective-duel",
   storageBucket: "toeic-detective-duel.firebasestorage.app",
   messagingSenderId: "379105141716",
