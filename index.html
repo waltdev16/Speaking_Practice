@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script>if(new URLSearchParams(location.search).get("mode")==="host")document.documentElement.classList.add("host-mode")</script>
+<script>(function(m){if(m==="host"||m==="player")document.documentElement.classList.add("duel-mode")})(new URLSearchParams(location.search).get("mode"))</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TOEIC Speaking Practice · Questions 8–10</title>
 <meta name="description" content="25 practice sets for TOEIC Speaking Questions 8–10: respond to questions using information provided.">
@@ -491,7 +491,6 @@ mark.p{background:var(--blue-soft);color:var(--blue-d);font-weight:700;border-ra
 @media (max-width:860px){.duel-join{margin:18px 0 30px}.duel-lobby{grid-template-columns:1fr;padding-top:120px;gap:28px}.opts{grid-template-columns:1fr}}
 
 /* ===== Detective Duel (host, laptop) ===== */
-.host-mode #home,.host-mode #mystery,.host-mode footer,.host-mode .top{display:none!important}
 .host{min-height:100vh;background:var(--black);color:#fff;display:flex;flex-direction:column}
 .h-top{display:flex;justify-content:space-between;align-items:center;padding:16px 32px;border-bottom:1px solid #1F2224}
 .h-brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.08em}
@@ -591,6 +590,140 @@ mark.p{background:var(--blue-soft);color:var(--blue-d);font-weight:700;border-ra
 .r-skip{position:fixed;right:24px;bottom:24px}
 @media (prefers-reduced-motion:reduce){.lens,.dots-loader i{animation:none!important}}
 @media (max-width:860px){.h-grid,.h-players,.v-cards{grid-template-columns:1fr}.h-main{padding:18px}}
+
+/* ===== shared detective animations ===== */
+.env .classified{position:absolute;right:10px;bottom:12px;font-style:normal;font-weight:800;font-size:11px;letter-spacing:.16em;color:#C23B32;border:2px solid #C23B32;border-radius:4px;padding:2px 7px;transform:rotate(-10deg) scale(2.2);opacity:0}
+.env.open .classified{animation:stampIn .45s .75s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes stampIn{to{opacity:.9;transform:rotate(-10deg) scale(1)}}
+@keyframes envFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(-.6deg)}}
+@keyframes envShake{0%,100%{transform:translate(0) rotate(0)}20%{transform:translate(-4px,1px) rotate(-1.5deg)}40%{transform:translate(4px,-1px) rotate(1.5deg)}60%{transform:translate(-3px,0) rotate(-1deg)}80%{transform:translate(3px,1px) rotate(1deg)}}
+@keyframes sealGlow{0%,100%{box-shadow:0 0 0 5px rgba(43,138,106,.25)}50%{box-shadow:0 0 0 14px rgba(43,138,106,.05),0 0 30px rgba(125,211,245,.6)}}
+.envs:not(.one) .env:not(.open){animation:rise .6s var(--ease) both,envFloat 4.2s ease-in-out infinite;animation-delay:var(--d,0ms),calc(var(--d,0ms) + .6s)}
+.envs .env:not(.open):hover{animation:envShake .5s ease-in-out}
+.env.opening{animation:envShake .45s ease-in-out 2!important}
+.scanline{position:absolute;left:0;right:0;top:0;height:60px;background:linear-gradient(180deg,transparent,rgba(125,211,245,.28) 70%,rgba(125,211,245,.85) 100%);pointer-events:none;opacity:0;border-radius:24px}
+.desk{position:relative;overflow:hidden}
+.desk.scan-in .scanline{animation:scan 1.6s .2s ease-in-out 1}
+@keyframes scan{0%{opacity:1;transform:translateY(-60px)}90%{opacity:1}100%{opacity:0;transform:translateY(900px)}}
+.radar{position:relative;width:110px;height:110px;margin:0 auto 22px;display:grid;place-items:center}
+.radar span:not(.lens){position:absolute;inset:0;border:2px solid var(--blue);border-radius:50%;opacity:0;animation:ping 2.4s ease-out infinite}
+.radar span:nth-child(2){animation-delay:1.2s}
+.radar .lens{width:34px;height:34px;border-width:4px}
+@keyframes ping{0%{transform:scale(.3);opacity:.9}100%{transform:scale(1.25);opacity:0}}
+.mcq{animation:rise .5s var(--ease) both;animation-delay:var(--d,0ms)}
+
+/* ===== duel screens: hide the website ===== */
+.duel-mode #home,.duel-mode #mystery,.duel-mode footer,.duel-mode .top{display:none!important}
+.duel-mode body{background:var(--black)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--blue);letter-spacing:.02em}
+.eyebrow i{width:22px;height:2px;background:var(--blue)}
+.dot{width:9px;height:9px;border-radius:50%;background:#3A3F44;display:inline-block;flex:none}
+.dot.on{background:var(--green);box-shadow:0 0 0 4px rgba(43,138,106,.25)}
+.dot.off{background:#E0483E}
+
+/* ===== iPad player mode ===== */
+.pm{min-height:100vh;background:var(--black);color:#fff;display:flex;flex-direction:column}
+.pm-top,.h-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 28px;border-bottom:1px solid #1C1F21}
+.pm-chip{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;background:#141618;border:1px solid #23272A;border-radius:999px;padding:7px 14px}
+.pm-chip:empty{display:none}
+.pm-stage{flex:1;display:flex;align-items:center;justify-content:center;padding:36px 24px 48px}
+.pm-hero{width:100%;max-width:720px;animation:rise .6s var(--ease) both}
+.pm-hero.center{text-align:center;display:flex;flex-direction:column;align-items:center}
+.pm-hero h1,.hc-title{font-size:clamp(40px,6vw,72px);line-height:1;letter-spacing:-.035em;font-weight:800;margin:16px 0 16px}
+.pm-hero h1 .l2,.hc-title .l2{display:block;color:var(--blue)}
+.pm-hero .lead{font-size:18px;color:#C9CED1;margin:0 0 22px;max-width:560px}
+.pm-note{color:#8C9397;font-size:14px;margin:14px 0 0}
+.pm-notice{font-size:16px;color:#FFB4AC;margin:0 0 22px}
+.pm-env{width:min(380px,78vw);margin-bottom:8px}
+.pm-env .env{width:100%;cursor:default}
+.pm-env.float .env{animation:envFloat 4s ease-in-out infinite}
+.pm-env.float .seal{animation:sealGlow 2.4s ease-in-out infinite}
+.pm-env.shake .env{animation:envShake .5s ease-in-out infinite}
+.pm-env.shake .seal{animation:sealGlow .9s ease-in-out infinite}
+.pm-env{padding-top:110px}
+.pm-env.opened .env{transform:scale(1.04);transition:transform .6s var(--ease)}
+.pm-slots{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+.pm-slot{text-align:left;background:#141618;border:1.5px solid #23272A;border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:6px;color:#fff;transition:transform .2s var(--ease),border-color .2s}
+.pm-slot:hover{transform:translateY(-3px);border-color:var(--blue)}
+.pm-slot:active{transform:scale(.98)}
+.pm-slot.taken{opacity:.55}
+.pm-slot-n{width:48px;height:48px;border-radius:14px;background:var(--green);display:grid;place-items:center;font-weight:800;font-size:22px;margin-bottom:8px}
+.pm-slot:nth-child(2) .pm-slot-n{background:var(--blue);color:var(--black)}
+.pm-slot b{font-size:24px;letter-spacing:-.02em}
+.pm-slot small{color:#9AA1A6;font-size:13.5px}
+.pm-name{display:flex;gap:10px;width:100%;max-width:520px}
+.pm-name input{flex:1;height:56px;border-radius:999px;border:1.5px solid #33373B;background:#141618;color:#fff;padding:0 22px;font:inherit;font-size:18px;outline:none;min-width:0}
+.pm-name input:focus{border-color:var(--blue)}
+.pm-name .btn{height:56px;padding:0 26px;font-size:16px}
+.pm-status{display:inline-flex;align-items:center;gap:12px;background:#141618;border:1px solid #23272A;border-radius:999px;padding:12px 20px 12px 14px;font-weight:600;font-size:16px}
+.pm-mini{width:100%;max-width:880px}
+.pm-mini h2{font-size:32px;font-weight:800;letter-spacing:-.03em;margin:8px 0 0}
+.pm .pm-stage:has(.pm-mini){flex:0;padding:22px 24px 6px}
+.pm-play{background:var(--bg);color:var(--ink);padding:22px 0 60px;border-radius:28px 28px 0 0;animation:rise .5s var(--ease) both}
+.pm-sub-title{font-size:clamp(30px,4.6vw,54px)!important}
+.count-num{font-family:var(--mono);font-size:110px;line-height:1;font-weight:500;color:var(--blue);margin:6px 0}
+.count-num.pulse{animation:countIn .5s var(--ease)}
+.count-num.go{color:var(--green);animation:countIn .5s var(--ease)}
+@keyframes countIn{from{opacity:.2;transform:scale(1.5)}}
+.folder{position:relative;width:180px;height:130px;margin:0 auto 26px;animation:rise .5s var(--ease) both}
+.folder-tab{position:absolute;left:14px;top:0;width:70px;height:22px;background:#C9A86A;border-radius:8px 8px 0 0}
+.folder-body{position:absolute;inset:14px 0 0;background:#E2C487;border-radius:6px 12px 12px 12px;padding:26px 22px;display:flex;flex-direction:column;gap:10px;box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
+.folder-body i{display:block;height:6px;border-radius:3px;background:rgba(0,0,0,.14)}
+.folder-body i:nth-child(2){width:70%}.folder-body i:nth-child(3){width:50%}
+.evidence-stamp{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%) rotate(-12deg) scale(2.6);opacity:0;border:3px solid var(--green);color:var(--green);background:rgba(255,255,255,.92);font-weight:800;font-size:15px;letter-spacing:.14em;padding:5px 12px;border-radius:6px;white-space:nowrap;animation:stampIn2 .5s .45s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes stampIn2{to{opacity:1;transform:translate(-50%,-50%) rotate(-12deg) scale(1)}}
+@media (max-width:700px){.pm-slots{grid-template-columns:1fr}.pm-name{flex-direction:column}.pm-top,.h-top{padding:12px 16px}}
+
+/* ===== host console ===== */
+.h-right{display:flex;align-items:center;gap:10px}
+.dev-btn{display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 14px;border-radius:999px;border:1.5px solid #2A2E31;color:#fff;font-weight:600;font-size:14px;transition:border-color .15s}
+.dev-btn:hover{border-color:var(--blue)}
+.dev-pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;color:#C9CED1}
+.hc{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px 48px}
+.hc.still .hc-wrap{animation:none}
+.hc-wrap{width:100%;max-width:980px;display:flex;flex-direction:column;align-items:center;text-align:center;animation:rise .55s var(--ease) both}
+.hc-sub{font-size:19px;color:#C9CED1;margin:0 0 6px;max-width:620px}
+.hc-timer{font-family:var(--mono);font-size:clamp(70px,10vw,130px);line-height:1;color:var(--blue);margin:4px 0 8px;min-height:1em}
+.hc-players{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:760px;margin:30px 0 28px}
+.hc-player{background:#141618;border:1.5px solid #23272A;border-radius:22px;padding:20px 22px;text-align:left;display:flex;flex-direction:column;gap:4px;transition:border-color .3s}
+.hc-player b{font-size:clamp(26px,3vw,36px);font-weight:800;letter-spacing:-.03em;line-height:1.15;word-break:break-word}
+.hc-line{font-weight:700;font-size:14.5px;color:#C9CED1}
+.hc-player.ok{border-color:var(--green)}.hc-player.ok .hc-line{color:#7CD3AE}
+.hc-player.busy{border-color:rgba(125,211,245,.6)}
+.hc-player.warn{border-color:rgba(224,72,62,.7)}.hc-player.warn .hc-line{color:#FF8A80}
+.hc-actions{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+.hc-actions .btn{height:52px;padding:0 24px;font-size:16px}
+.btn.big{height:60px!important;padding:0 36px!important;font-size:18px!important}
+.hc-actions .link,.hc-foot .link{color:#9AA1A6;font-size:14px}
+.hc-foot{margin-top:22px}
+.hc-case{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:#9AA1A6;font-weight:600;margin:14px 0 0}
+.hc-case select{height:38px;border-radius:999px;border:1.5px solid #33373B;background:#141618;color:#fff;padding:0 14px;font:inherit;font-size:14px}
+.h-drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100%);background:#111315;border-left:1px solid #23272A;z-index:160;transform:translateX(100%);transition:transform .35s var(--ease);padding:22px;overflow:auto}
+.h-drawer.on{transform:none}
+.h-scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:155;opacity:0;pointer-events:none;transition:.25s}
+.h-scrim.on{opacity:1;pointer-events:auto}
+.d-head{display:flex;justify-content:space-between;align-items:center}
+.d-head h3{margin:0;font-size:24px;font-weight:800}
+.d-head .x{color:#9AA1A6}
+.d-help{color:#9AA1A6;font-size:14px;line-height:1.55}
+.d-slot,.d-req{display:flex;align-items:center;gap:12px;justify-content:space-between;background:#141618;border:1px solid #23272A;border-radius:16px;padding:14px 16px;margin-bottom:10px}
+.d-slot>div,.d-req>div:first-child{display:flex;flex-direction:column;gap:2px;flex:1}
+.d-slot b,.d-req b{font-size:15px}
+.h-drawer h4{margin:22px 0 10px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#9AA1A6}
+.d-empty{color:#6B7277;font-size:14px}
+.h-drawer .btn:not(.green){background:transparent;color:#fff;border-color:#3A3F44}
+.d-req{flex-wrap:wrap}
+@media (max-width:760px){.hc-players{grid-template-columns:1fr}.dev-btn span:last-child{display:none}}
+
+/* ===== solo Mystery Envelope on phones: swipeable envelopes ===== */
+@media (max-width:640px){
+  .envs{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:16px!important;padding:120px 16px 18px!important;margin:0 -16px!important;max-width:none!important;scrollbar-width:none}
+  .envs::-webkit-scrollbar{display:none}
+  .envs .env{flex:0 0 80%;scroll-snap-align:center}
+  .mrules{margin-bottom:0!important}
+  .swipe-hint{display:block!important}
+}
+.swipe-hint{display:none;text-align:center;font-size:13px;color:#8C9397;margin:-4px 0 0}
 
 /* timed run */
 .run{padding:22px 0 10px;display:flex;flex-direction:column;align-items:center;text-align:center}
@@ -783,23 +916,13 @@ footer{padding:26px 0 40px;color:#8C9397;font-size:12.5px}
       <h1 class="enter d1">Mystery <span>Envelope</span></h1>
       <p class="lead enter d2">Three sealed cases. Each envelope hides a different schedule and a surprise question. Pick one, read fast, and solve the case out loud.</p>
       <div class="mrules enter d3"><span><b>1</b>Pick an envelope</span><span><b>2</b>Read the schedule</span><span><b>3</b>Answer the surprise question</span></div>
-      <div class="duel-join enter d3" id="duelJoin">
-        <div class="dj-text"><b>Detective Duel</b><span>Playing against someone? Enter the game code shown on the host screen.</span></div>
-        <form id="joinForm" autocomplete="off" novalidate>
-          <input id="jCode" maxlength="6" placeholder="GAME CODE" aria-label="Game code" autocapitalize="characters" spellcheck="false">
-          <input id="jName" maxlength="16" placeholder="Your nickname" aria-label="Nickname" spellcheck="false">
-          <button class="btn green" type="submit">Join duel</button>
-          <p class="dj-err" id="jErr" role="alert"></p>
-        </form>
-      </div>
-      <div id="duelHero" hidden></div>
       <div class="envs" id="envs"></div>
+      <p class="swipe-hint">Swipe to see the three cases →</p>
       <div class="mbar"><div class="score" id="score"></div><button class="btn ghost-w sm" id="newRound">↻ New round</button></div>
       <div id="win"></div>
     </div>
   </section>
   <section class="case" id="case" hidden></section>
-  <section class="case" id="duelPlay" hidden></section>
 </div>
 
 <footer class="dark"><div class="wrap">Unofficial practice material, not affiliated with ETS. TOEIC® is a registered trademark of ETS. All companies, people and documents are fictional.</div></footer>
@@ -814,19 +937,17 @@ footer{padding:26px 0 40px;color:#8C9397;font-size:12.5px}
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
 <script type="module">
-  // Host console on the laptop (?mode=host); everyone else gets the player side of the duel.
-  const hostMode = new URLSearchParams(location.search).get('mode') === 'host';
-  import(hostMode ? './js/host.js' : './js/duel.js').catch(err => {
+  // ?mode=host → host console on the laptop. ?mode=player → paired iPad. Otherwise the normal website.
+  const mode = new URLSearchParams(location.search).get('mode');
+  if (mode === 'host' || mode === 'player') import(mode === 'host' ? './js/host.js' : './js/duel.js').catch(err => {
     console.error('Detective Duel failed to load:', err);
-    if (!hostMode) return;
-    // Show what went wrong instead of a blank page.
     const box = document.createElement('div');
     box.className = 'host';
-    box.innerHTML = `<main class="h-main"><div class="h-card h-login"><span class="case-tag"><i></i>SETUP PROBLEM</span>
-      <h1>The host console could not load</h1>
+    box.innerHTML = `<main class="hc"><div class="h-card h-login"><span class="eyebrow"><i></i>Setup problem</span>
+      <h1>The ${mode === 'host' ? 'host console' : 'player screen'} could not load</h1>
       <p>Check these three things, then reload:</p>
-      <ol class="h-checks"><li>The files are on GitHub as <code>js/host.js</code>, <code>js/sync.js</code>, <code>js/duel-core.js</code> and <code>js/firebase-config.js</code> (inside a folder called <code>js</code>).</li>
-      <li><code>js/firebase-config.js</code> still starts with <code>export const firebaseConfig = {</code> and only the values between the quotes were changed.</li>
+      <ol class="h-checks"><li>The files are on GitHub inside a folder called <code>js</code> (<code>js/host.js</code>, <code>js/duel.js</code>, <code>js/sync.js</code>, <code>js/duel-core.js</code>, <code>js/firebase-config.js</code>).</li>
+      <li><code>js/firebase-config.js</code> still starts with <code>export const firebaseConfig = {</code>.</li>
       <li>The device is online.</li></ol>
       <p>Error details:</p><pre class="h-err"></pre></div></main>`;
     box.querySelector('.h-err').textContent = (err && (err.message || err.toString())) || String(err);

@@ -45,7 +45,7 @@ const hush=()=>{try{canSpeak&&speechSynthesis.cancel()}catch(e){}if(playingBtn)p
 function renderGroups(animate){
  $('#groups').innerHTML=GROUPS.map(([k,l])=>`<button role="tab" data-g="${k}" class="${k===grp?'on':''}" aria-selected="${k===grp}">${l}<small>${EX.filter(e=>e.g===k).length}</small></button>`).join('');
  let n=0;
- $('#exlist').innerHTML=EX.map((e,i)=>e.g!==grp?'':`<button class="ex${i===cur?' on':''}" data-i="${i}" style="--d:${animate?(n++)*50:0}ms${animate?'':';animation:none'}"><div class="no">${pad(i+1)}${done.has(e.id)?'<i>✓ done</i>':''}</div><div class="t">${e.title}</div></button>`).join('');
+ $('#exlist').innerHTML=EX.map((e,i)=>e.g!==grp?'':`<button class="ex${i===cur?' on':''}" data-i="${i}" style="--d:${animate?(n++)*50:0}ms"><div class="no">${pad(i+1)}${done.has(e.id)?'<i>✓ done</i>':''}</div><div class="t">${e.title}</div></button>`).join('');
  $('#progTxt').textContent=`${done.size} / ${EX.length} done`;
  $('#progBar').style.width=(done.size/EX.length*100)+'%';
 }
@@ -279,9 +279,9 @@ function newRound(){round=shuffle([...CASES.keys()]).slice(0,3);solved=new Set()
 const caseNo=n=>'00'+(n+1);
 function renderEnvs(animate,justSolved){
  $('#envs').innerHTML=round.map((ci,n)=>{const isS=solved.has(n)&&n!==justSolved;
-  return `<button class="env${isS||n===justSolved?' open':''}${isS?' solved':''}${n===curCase?' open active':''}" data-n="${n}" style="--d:${animate?n*110:0}ms${animate?'':';animation:none'}" aria-label="Open case ${caseNo(n)}">
+  return `<button class="env${isS||n===justSolved?' open':''}${isS?' solved':''}${n===curCase?' open active':''}" data-n="${n}" style="--d:${animate?n*110:0}ms" aria-label="Open case ${caseNo(n)}">
    <span class="env-back"></span>
-   <span class="env-letter"><small>CASE ${caseNo(n)}</small><b>${CASES[ci].title}</b><i></i><i></i><i></i></span>
+   <span class="env-letter"><small>CASE ${caseNo(n)}</small><b>${CASES[ci].title}</b><i></i><i></i><i></i><em class="classified">CLASSIFIED</em></span>
    <span class="env-front"><span class="env-label">CASE<b>${caseNo(n)}</b></span><span class="stamp">CONFIDENTIAL</span></span>
    <span class="env-flap"></span><span class="seal">?</span><span class="solved-stamp">SOLVED</span></button>`}).join('');
  $('#score').innerHTML=`Cases solved <span class="dots">${[0,1,2].map(n=>`<i class="${solved.has(n)?'on':''}"></i>`).join('')}</span> ${solved.size} / 3`;
@@ -291,8 +291,11 @@ $('#envs').addEventListener('click',e=>{const b=e.target.closest('.env');if(!b)r
 function openEnvelope(n,el){
  const my=++t3;hush();closeCard();
  document.querySelectorAll('.env.active').forEach(x=>{x.classList.remove('active');if(!solved.has(+x.dataset.n))x.classList.remove('open')});
- curCase=n;el.classList.add('open','active');
- setTimeout(()=>{if(my===t3)showCase(n)},950);
+ curCase=n;el.classList.add('active');
+ if(el.classList.contains('open')){setTimeout(()=>{if(my===t3)showCase(n)},300);return}
+ el.classList.add('opening');                       // a short shake, then the flap opens and the file slides out
+ setTimeout(()=>{if(my!==t3)return;el.classList.remove('opening');el.classList.add('open')},900);
+ setTimeout(()=>{if(my===t3)showCase(n)},2100);
 }
 function showCase(n){
  const my=++t3,c=CASES[round[n]];
@@ -302,7 +305,7 @@ function showCase(n){
   <div class="case-head"><div><span class="case-tag"><i></i>CASE ${caseNo(n)} · OPEN</span><h2>${c.title}</h2></div>
    <div class="tools"><button class="btn sm" id="backEnv">← Back to envelopes</button></div></div>
   <div class="readbar" id="readbar"><div class="lbl">Reading time<small>Study the schedule. A surprise question is coming.</small></div><div class="sbar"><i id="rbarI"></i></div><span class="snum" id="rnum">45s</span><button class="btn green sm" id="ready">I’m ready →</button></div>
-  <div class="desk"><p class="desk-hint"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11V5a2 2 0 1 1 4 0v6m0-2a2 2 0 1 1 4 0v3m0-1a2 2 0 1 1 4 0v4a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3l-3-5a2 2 0 0 1 3.4-2l1.6 2"/></svg>Click any <span class="tap">highlighted</span> word to see what it means.</p><div class="swap">${docHTML(c)}</div></div>
+  <div class="desk scan-in"><span class="scanline"></span><p class="desk-hint"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11V5a2 2 0 1 1 4 0v6m0-2a2 2 0 1 1 4 0v3m0-1a2 2 0 1 1 4 0v4a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3l-3-5a2 2 0 0 1 3.4-2l1.6 2"/></svg>Click any <span class="tap">highlighted</span> word to see what it means.</p><div class="swap">${docHTML(c)}</div></div>
   <div id="caseQ"><div class="mystery-q"><div class="big">?</div><b>Surprise question</b><p>It will appear when the reading time ends, or when you click “I’m ready”.</p></div></div>
  </div></div>`;
  $('#backEnv').onclick=backToEnvs;
