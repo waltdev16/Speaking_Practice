@@ -546,6 +546,8 @@ mark.p{background:var(--blue-soft);color:var(--blue-d);font-weight:700;border-ra
 .h-dialog p{color:var(--ink2);margin:0 0 16px}
 .h-flash{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#C23B32;color:#fff;padding:12px 18px;border-radius:14px;font-weight:600;z-index:210;max-width:90vw}
 .h-card code{font-family:var(--mono);color:var(--blue)}
+.h-checks{color:#C9CED1;padding-left:20px;line-height:1.6}
+.h-err{background:#0B0B0C;border:1px solid #33373B;border-radius:12px;padding:12px;color:#FF8A80;font-family:var(--mono);font-size:12.5px;white-space:pre-wrap;word-break:break-word}
 
 /* ===== Cinematic reveal ===== */
 .reveal-wrap{position:fixed;inset:0;z-index:150;background:radial-gradient(ellipse at 50% 40%,#16191B 0%,#0B0B0C 70%);overflow:auto}
@@ -813,8 +815,23 @@ footer{padding:26px 0 40px;color:#8C9397;font-size:12.5px}
 <script src="js/app.js"></script>
 <script type="module">
   // Host console on the laptop (?mode=host); everyone else gets the player side of the duel.
-  if (new URLSearchParams(location.search).get('mode') === 'host') import('./js/host.js');
-  else import('./js/duel.js');
+  const hostMode = new URLSearchParams(location.search).get('mode') === 'host';
+  import(hostMode ? './js/host.js' : './js/duel.js').catch(err => {
+    console.error('Detective Duel failed to load:', err);
+    if (!hostMode) return;
+    // Show what went wrong instead of a blank page.
+    const box = document.createElement('div');
+    box.className = 'host';
+    box.innerHTML = `<main class="h-main"><div class="h-card h-login"><span class="case-tag"><i></i>SETUP PROBLEM</span>
+      <h1>The host console could not load</h1>
+      <p>Check these three things, then reload:</p>
+      <ol class="h-checks"><li>The files are on GitHub as <code>js/host.js</code>, <code>js/sync.js</code>, <code>js/duel-core.js</code> and <code>js/firebase-config.js</code> (inside a folder called <code>js</code>).</li>
+      <li><code>js/firebase-config.js</code> still starts with <code>export const firebaseConfig = {</code> and only the values between the quotes were changed.</li>
+      <li>The device is online.</li></ol>
+      <p>Error details:</p><pre class="h-err"></pre></div></main>`;
+    box.querySelector('.h-err').textContent = (err && (err.message || err.toString())) || String(err);
+    document.body.appendChild(box);
+  });
 </script>
 
 </body>

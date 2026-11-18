@@ -1,11 +1,11 @@
 /* Detective Duel — Firebase synchronization (Realtime Database + Authentication).
    Every read and write the duel makes goes through this file. Permissions are enforced by the Security Rules
    in firebase/database.rules.json, not by this code. */
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import { getAuth, signInAnonymously, signInWithEmailAndPassword, onAuthStateChanged, signOut }
-  from 'https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js';
+  from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { getDatabase, ref, get, set, update, remove, onValue, onDisconnect, serverTimestamp }
-  from 'https://www.gstatic.com/firebasejs/13.4.0/firebase-database.js';
+  from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 import { firebaseConfig, isFirebaseConfigured } from './firebase-config.js';
 import { DUEL, makeCode } from './duel-core.js';
 
